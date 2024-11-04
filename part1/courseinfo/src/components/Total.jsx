@@ -1,5 +1,5 @@
-const Total = ({exercises}) => {
-    return <p>Number of exercises {exercises.map((prev, cv) => prev + cv, 0)}</p>
+const Total = ({parts}) => {
+    return <p>Number of exercises {parts.reduce((prev, cv) => prev + cv.exercises, 0)}</p>
 }
 
 export default Total
