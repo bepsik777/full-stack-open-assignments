@@ -30,7 +30,7 @@ const App = () => {
         <Button handleClick={handleFeedback} label={"Bad"}></Button>
       </div>
       <h2>Statistics</h2>
-      <Statistics feedbacks={feedbacks}></Statistics>
+      {feedbacks.total != 0 ?<Statistics feedbacks={feedbacks}></Statistics> : <div></div>}
     </>
   );
 };

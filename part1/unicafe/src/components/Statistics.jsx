@@ -1,13 +1,15 @@
+import StatisticsLine from "./StatisticsLine";
+
 const Statistics = ({feedbacks}) => {
   return (
-    <div>
-      <p>good: {feedbacks.good}</p>
-      <p>neutral: {feedbacks.neutral}</p>
-      <p>bad: {feedbacks.bad}</p>
-      <p>total: {feedbacks.total}</p>
-      <p>average: {feedbacks.total / 3}</p>
-      <p>positive: {feedbacks.total === 0 ? "" : (feedbacks.good / feedbacks.total) * 100 + "%"}</p>
-    </div>
+    <table>
+      <StatisticsLine label={"good"} value={feedbacks.good}></StatisticsLine>
+      <StatisticsLine label={"neutral"} value={feedbacks.neutral}></StatisticsLine>
+      <StatisticsLine label={"bad"} value={feedbacks.bad}></StatisticsLine>
+      <StatisticsLine label={"total"} value={feedbacks.total}></StatisticsLine>
+      <StatisticsLine label={"average"} value={feedbacks.total / 3}></StatisticsLine>
+      <StatisticsLine label={"positive"} value={(feedbacks.good / feedbacks.total) * 100 + "%"}></StatisticsLine>
+    </table>
   );
 };
 
