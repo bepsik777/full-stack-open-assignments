@@ -5,7 +5,7 @@ const Part = ({ part, exercises }) => {
 const Content = ({ parts }) => {
   return (
     <>
-      {parts.map(part => <Part part={part.name} exercises={part.exercises}></Part>)}
+      {parts.map(part => <Part part={part.name} exercises={part.exercises} key={part.id}></Part>)}
     </>
   );
 };

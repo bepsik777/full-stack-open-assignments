@@ -1,5 +1,5 @@
 const Total = ({parts}) => {
-    return <p>Number of exercises {parts.reduce((prev, cv) => prev + cv.exercises, 0)}</p>
+    return <p style={{fontWeight: "bold"}}>Total of {parts.reduce((prev, cv) => prev + cv.exercises, 0)} exercises</p>
 }
 
 export default Total
