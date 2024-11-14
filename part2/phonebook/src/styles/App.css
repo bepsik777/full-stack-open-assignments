@@ -14,3 +14,19 @@ ul {
     margin: 6px 0;
     gap: 5px;
 }
+
+.notification {    
+    padding: 12px;
+}
+
+.notification.success {
+    background-color: lightgreen;
+    border: 2px solid green;
+    color: darkgreen;
+}
+
+.notification.error {
+    background-color: red;
+    border: 2px solid darkviolet;
+    color: darkred;
+}

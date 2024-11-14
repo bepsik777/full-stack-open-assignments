@@ -6,10 +6,11 @@ import NumberList from "./components/NumbersList";
 import contactsService from "./services/contacts";
 
 function App() {
-  const [contacts, setcontacts] = useState([]);
+  const [contacts, setcontacts] = useState(null);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [notification, setNotification] = useState({ text: "", isError: false });
 
   useEffect(() => {
     contactsService.getAll().then((allContacts) => setcontacts(allContacts));
@@ -20,7 +21,7 @@ function App() {
   };
 
   const checkIfNameExist = (name) => {
-    return contacts.map((el) => el.name).includes(name);
+    return contacts.map((el) => el.name.toLowerCase().trim()).includes(name.toLowerCase().trim());
   };
 
   const handlePersonInput = (e) => {
@@ -32,11 +33,11 @@ function App() {
   };
 
   const handleAddContact = (newContact) => {
-
     contactsService
       .addContact(newContact)
       .then((newContact) => setcontacts([...contacts, newContact]));
 
+    updateNotification(`${newName} has been added to your contacts`, false);
     setNewName("");
     setNewNumber("");
   };
@@ -44,23 +45,29 @@ function App() {
   const handleUpdateNumber = (id, updatedContact) => {
     contactsService
       .updateNumber(id, updatedContact)
-      .then((updatedContact) => setcontacts(contacts.map(contact => contact.id === id ? updatedContact : contact)));
+      .then((updatedContact) =>
+        setcontacts(
+          contacts.map((contact) =>
+            contact.id === id ? updatedContact : contact
+          )
+        )
+      );
+    updateNotification(`${newName} number has been updated`, false);
     setNewName("");
     setNewNumber("");
   };
 
-  const handleAddButton = (e, id) => {
+  const handleAddButton = (e) => {
     e.preventDefault();
 
     if (newName === "" || newNumber == "") {
-      alert("you must include name and phone number");
+      updateNotification("you must include name and phone number", true)
       return;
     }
     const newContact = { name: newName, number: newNumber };
 
-
     if (checkIfNameExist(newName)) {
-      const id = contacts.find(person => person.name === newName).id
+      const id = contacts.find((person) => person.name.toLowerCase().trim() === newName.toLowerCase().trim()).id;
       window.confirm(
         `${newName} already added to phonebook, are you sure you want to update number`
       ) && handleUpdateNumber(id, newContact);
@@ -78,13 +85,36 @@ function App() {
       contactsService
         .deleteContact(id)
         .then((response) => console.log(response))
-        .then(() => setcontacts(contacts.filter((person) => person.id !== id)));
+        .then(() => setcontacts(contacts.filter((person) => person.id !== id)))
+        .catch(() =>
+          updateNotification(
+            `${
+              contacts.find((person) => person.id === id).name
+            } was already deleted from the server`,
+            true
+          )
+        );
     }
+  };
+
+  const updateNotification = (text, isError) => {
+    setNotification({ text: text, isError: isError });
+
+    setTimeout(() => {
+      setNotification({ text: "", isError: false });
+    }, 6000);
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      {notification.text.length != 0 && (
+        <div
+          className={`notification ${notification.isError ? "error" : "success"}`}
+        >
+          {notification.text}
+        </div>
+      )}
       <Filter onFilterChange={handleFilterChange}></Filter>
       <AddNumberForm
         onAddPerson={handleAddButton}
