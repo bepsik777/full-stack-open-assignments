@@ -1,9 +1,13 @@
-const CountryList = ({countries}) => {
-    return (
-        <ul>
-            {countries.map(country => <li key={country.cca2}>{country.name.common}</li>)}
-        </ul>
-    )
-}
+import CountryListing from "./CountryListing";
 
-export default CountryList
+const CountryList = ({ countries }) => {
+  return (
+    <ul className="country-list">
+      {countries.map((country) => (
+        <CountryListing key={country.cca2} country={country}></CountryListing>
+      ))}
+    </ul>
+  );
+};
+
+export default CountryList;

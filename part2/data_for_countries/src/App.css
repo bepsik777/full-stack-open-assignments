@@ -5,3 +5,21 @@ input {
 img {
   border: 2px solid black;
 }
+
+
+.country-list {
+  list-style: none;
+  width: fit-content;
+}
+
+.listing-text {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.listing-text > button {
+  height: 50%;
+  width: 80px;
+  align-self: center;
+}
