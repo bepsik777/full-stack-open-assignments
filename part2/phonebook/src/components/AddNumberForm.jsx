@@ -15,7 +15,7 @@ const AddNumberForm = ({onAddPerson, onNumberInput, onPersonInput, newNumber, ne
         <div className="input-container">
           <label htmlFor="number">Phone number</label>
           <input
-            type="number"
+            type="text"
             id="number"
             value={newNumber}
             onChange={onNumberInput}
