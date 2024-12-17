@@ -18,4 +18,19 @@ router.post('/', async (req, res, next) => {
   res.status(201).json(result)
 })
 
+router.delete('/:id', async (req, res, next) => {
+    const id = req.params.id
+    const result = await Blog.findByIdAndDelete(id)
+    
+    result == null ? res.status(404).send('Resource does not exist') : res.status(204)
+})
+
+router.put('/:id', async (req, res, next) => {
+    const id = req.params.id
+    const newResource = req.body
+    const result = await Blog.findByIdAndUpdate(id, newResource, {new: true})
+
+    result == null ? res.status(404).send('Resource does not exist') : res.status(200).send(result)
+})
+
 module.exports = router

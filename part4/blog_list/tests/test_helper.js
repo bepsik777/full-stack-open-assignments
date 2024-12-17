@@ -20,7 +20,24 @@ const getBlogsFromDB = async () => {
     return blogs.map(blog => blog.toJSON())
 }
 
+const getFakeId = async () => {
+    const doc = {
+        name: 'sad',
+        author: 'fdsf',
+        url: 'www.cam.ia',        
+    }
+
+    const blog = new Blog(doc)
+    await blog.save()
+    const retrieved = await Blog.findOne({name: doc.name})
+    const fakeId = retrieved.id
+    await Blog.findByIdAndDelete(fakeId)
+
+    return fakeId
+}
+
 module.exports = {
     initialBlogs,
-    getBlogsFromDB
+    getBlogsFromDB,
+    getFakeId
 }
