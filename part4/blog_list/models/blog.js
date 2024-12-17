@@ -1,11 +1,25 @@
 const mongoose = require('mongoose')
 
-const blogSchema = new mongoose.Schema({
-  name: String,
-  author: String,
-  url: String,
-  like: Number,
-})
+const blogSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    author: String,
+    url: { type: String, required: true },
+    like: Number,
+  },
+  {
+    toJSON: {
+      transform: (dec, ret) => {
+        ret.id = ret._id.toString()
+        delete ret._id
+        delete ret.__v
+      },
+    },
+  }
+)
 
 const Blog = mongoose.model('Blog', blogSchema)
 
