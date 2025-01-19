@@ -9,6 +9,10 @@ const blogSchema = new mongoose.Schema(
     author: String,
     url: { type: String, required: true },
     like: Number,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
   },
   {
     toJSON: {

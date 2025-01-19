@@ -1,4 +1,6 @@
 const logger = require('./logger')
+const jwt = require('jsonwebtoken')
+const User = require('../models/user')
 
 const requestLogger = (req, res, next) => {
   if (process.env.NODE_ENV != 'test') {
@@ -20,9 +22,36 @@ const errorHandler = (error, req, res, next) => {
     res.status(400).send({ error: 'Malformated ID' })
   } else if (error.name === 'ValidationError') {
     res.status(400).send({ error: 'Wrong format' })
+  } else if (error.name === 'PasswordToShort') {
+    res
+      .status(400)
+      .send({ error: 'password must be at least 3 characters long' })
   }
 
   next(error)
 }
 
-module.exports = { requestLogger, unknownEndpoint, errorHandler }
+const tokenExtractor = (req, res, next) => {
+  const token = req.get('Authorization')
+  if (token && token.startsWith('Bearer ')) {
+    req.token = token.replace('Bearer ', '')
+  } else {
+    res.status(401).json({error: 'Authentication failed'})
+  }
+
+  next()
+}
+
+const userExtractor = async (req, res, next) => {
+  const payload = jwt.verify(req.token, process.env.SECRET)
+  req.user = await User.findById(payload.id)
+  next()
+}
+
+module.exports = {
+  requestLogger,
+  unknownEndpoint,
+  errorHandler,
+  tokenExtractor,
+  userExtractor
+}
