@@ -7,6 +7,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import UserInfo from './components/UserInfo'
 import NotificationBox from './components/NotificactionBox'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -20,7 +21,7 @@ const App = () => {
       const blogs = await blogService.getAll()
       setBlogs(blogs)
     }
-    if (user !== null) {      
+    if (user !== null) {
       fetchBlogs()
     }
   }, [user])
@@ -28,8 +29,8 @@ const App = () => {
   useEffect(() => {
     let cachedUser = window.localStorage.getItem('loggedUser')
     if (cachedUser) {
-      cachedUser = JSON.parse(cachedUser)      
-      setUser(cachedUser)      
+      cachedUser = JSON.parse(cachedUser)
+      setUser(cachedUser)
       blogService.setToken(cachedUser.token)
     }
   }, [])
@@ -42,7 +43,7 @@ const App = () => {
       setPassword('')
       setUsername('')
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
-      setUser(user)      
+      setUser(user)
       blogService.setToken(user.token)
       handleNotification(`You have logged in as ${user.username}`)
     } catch (e) {
@@ -58,26 +59,32 @@ const App = () => {
   }
 
   const handleNotification = (text, isError = false) => {
-    setNotification({text, isError})
-    setTimeout(() => setNotification(null), 5000) 
+    setNotification({ text, isError })
+    setTimeout(() => setNotification(null), 5000)
   }
 
   return (
     <div>
       <h1>BLOGS</h1>
-      {notification && <NotificationBox notification={notification}/>}
+      {notification && <NotificationBox notification={notification} />}
       {user === null ? (
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsername={setUsername}
-          handlePassword={setPassword}
-          handleLogin={handleLogin}
-        ></LoginForm>
+        <Togglable buttonLabel={'login'}>
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsername={setUsername}
+            handlePassword={setPassword}
+            handleLogin={handleLogin}
+          ></LoginForm>
+        </Togglable>
       ) : (
         <div>
           <UserInfo user={user} handleLogout={handleLogout}></UserInfo>
-          <BlogForm handleBlogs={setBlogs} blogs={blogs} handleNotification={handleNotification}></BlogForm>
+          <BlogForm
+            handleBlogs={setBlogs}
+            blogs={blogs}
+            handleNotification={handleNotification}
+          ></BlogForm>
           <BlogList blogs={blogs}></BlogList>
         </div>
       )}
