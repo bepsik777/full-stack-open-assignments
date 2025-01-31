@@ -63,6 +63,27 @@ const App = () => {
     setTimeout(() => setNotification(null), 5000)
   }
 
+  const handleLike = async (blog) => {
+    console.log(blog)
+    try {
+      blog.like += 1
+      setBlogs(blogs.map((b) => (b.id != blog.id ? b : blog)))
+      await blogService.updateBlog(blog)
+    } catch (e) {
+      handleNotification(e.data.message)
+      console.log(e)
+    }
+  }
+
+  const handleDelete = async (blog) => {
+    try {
+      await blogService.deleteBlog(blog)
+      setBlogs(blogs.filter((b) => b.id !== blog.id))
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
     <div>
       <h1>BLOGS</h1>
@@ -85,7 +106,12 @@ const App = () => {
             blogs={blogs}
             handleNotification={handleNotification}
           ></BlogForm>
-          <BlogList blogs={blogs}></BlogList>
+          <BlogList
+            user={user}
+            onDelete={handleDelete}
+            blogs={blogs}
+            onLike={handleLike}
+          ></BlogList>
         </div>
       )}
     </div>

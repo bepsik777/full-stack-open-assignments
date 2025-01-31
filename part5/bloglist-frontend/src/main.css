@@ -18,3 +18,36 @@ html {
     background-color: pink;
     color: darkred;
 }
+
+.blog-wrapper {        
+    border: 2px solid indigo;
+    width: fit-content;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.blog-title {    
+    display: flex;
+    justify-content: space-between;    
+    align-items: center;
+    width: 250px;
+}
+
+.blog-likes {
+    display: flex;
+    gap:20px;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.blog-delete {
+    padding: 10px 6px;
+    color: white;
+    background-color: blue;
+    border-radius: 10%;
+    cursor: pointer;
+}
+
+.blog-delete:hover {
+    background-color: red;
+}

@@ -69,7 +69,7 @@ const blogService = (method, data = {}, url = baseUrl, options) => {
     url,
     data,
     ...options,
-  })  
+  })
 }
 
 const getAll = async () => {
@@ -77,12 +77,28 @@ const getAll = async () => {
   return res.data
 }
 
-const createBlog = async (data) => {  
+const createBlog = async (data) => {
   const res = await blogService('POST', data, baseUrl, {
     headers: { Authorization: token },
   })
-  console.log(res.data, "res")
+  console.log(res.data, 'res')
   return res
 }
 
-export default { getAll, createBlog, setToken }
+const updateBlog = async (data) => {   
+  const reqData = {...data, user: data.user.id}
+  const res = await blogService('PUT', reqData, `${baseUrl}/${data.id}`, {
+    headers: { Authorization: token },
+  })
+  return res
+}
+
+const deleteBlog = async (data) => {
+  const reqData = {...data, user: data.user.id}
+  const res = await blogService('DELETE', reqData, `${baseUrl}/${data.id}`, {
+    headers: { Authorization: token },
+  })
+  return res
+}
+
+export default { getAll, createBlog, setToken, updateBlog, deleteBlog }
