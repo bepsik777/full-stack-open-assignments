@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const BlogForm = ({handleBlogs, blogs, handleNotification}) => {
+const BlogForm = ({ handleBlogs, blogs, handleNotification }) => {
   const [name, setName] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -12,9 +12,9 @@ const BlogForm = ({handleBlogs, blogs, handleNotification}) => {
       const newBlog = await blogService.createBlog({ name, author, url })
       handleNotification(`new blog ${name} was created`)
       handleBlogs([...blogs, newBlog.data])
-      setName("")
-      setAuthor("")
-      setUrl("")
+      setName('')
+      setAuthor('')
+      setUrl('')
     } catch (e) {
       console.log('error: ', e.response.data.error)
       handleNotification(e.response.data.error)
@@ -28,6 +28,7 @@ const BlogForm = ({handleBlogs, blogs, handleNotification}) => {
         <input
           type="text"
           value={name}
+          id="name"
           onChange={(e) => setName(e.target.value)}
         />
       </div>
@@ -35,6 +36,7 @@ const BlogForm = ({handleBlogs, blogs, handleNotification}) => {
         <label htmlFor="author">author:</label>
         <input
           value={author}
+          id="author"
           onChange={(e) => setAuthor(e.target.value)}
           type="text"
         />
@@ -43,6 +45,7 @@ const BlogForm = ({handleBlogs, blogs, handleNotification}) => {
         <label htmlFor="url">url:</label>
         <input
           type="text"
+          id="url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />
